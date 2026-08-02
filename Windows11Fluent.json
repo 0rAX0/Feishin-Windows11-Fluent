@@ -1,0 +1,44 @@
+{
+  "mode": "dark",
+  "extends": "defaultDark",
+  "colors": {
+    "background": "rgb(32, 32, 32)",
+    "background-alternate": "rgb(24, 24, 24)",
+    "surface": "rgb(44, 44, 44)",
+    "surface-foreground": "rgb(255, 255, 255)",
+    "foreground": "rgb(255, 255, 255)",
+    "foreground-muted": "rgb(200, 200, 200)",
+    "primary": "rgb(0, 120, 212)",
+    "black": "rgb(0, 0, 0)",
+    "white": "rgb(255, 255, 255)",
+    "state-error": "rgb(196, 43, 28)",
+    "state-info": "rgb(0, 120, 212)",
+    "state-success": "rgb(16, 124, 16)",
+    "state-warning": "rgb(157, 93, 0)"
+  },
+  "app": {
+    "overlay-header": "linear-gradient(transparent 0%, rgb(32 32 32 / 90%) 100%)",
+    "overlay-subheader": "linear-gradient(180deg, rgb(32 32 32 / 5%) 0%, var(--theme-colors-background) 100%)",
+    "scrollbar-size": "12px",
+    "scrollbar-handle-background": "rgba(255, 255, 255, 18%)",
+    "scrollbar-handle-hover-background": "rgba(255, 255, 255, 30%)",
+    "scrollbar-handle-active-background": "rgba(255, 255, 255, 40%)",
+    "scrollbar-handle-border-radius": "8px",
+    "scrollbar-track-background": "transparent",
+    "scrollbar-track-hover-background": "transparent",
+    "scrollbar-track-active-background": "transparent",
+    "scrollbar-track-border-radius": "8px"
+  },
+  "mantineOverride": {
+    "fontFamily": "'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif",
+    "defaultRadius": "sm",
+    "radius": {
+      "xs": "2px",
+      "sm": "4px",
+      "md": "8px",
+      "lg": "8px",
+      "xl": "8px"
+    }
+  },
+  "stylesheets": ["windows11-fluent.css"]
+}

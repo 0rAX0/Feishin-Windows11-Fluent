@@ -1,0 +1,830 @@
+/* Windows 11 Fluent-style approximation for Feishin */
+/* stylelint-disable selector-class-pattern */
+
+/* ---------- Play/Next/Last text buttons: Feishin hardcodes these to plain
+   white bg + black text regardless of theme — restyle to match the acrylic
+   flyout language used everywhere else instead of a stark default button. ---------- */
+.fs-play-button-module-wide-text-button {
+    background: rgb(44 44 44 / 88%) !important;
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: var(--theme-radius-md) !important;
+    backdrop-filter: blur(20px) saturate(125%);
+    transition: background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease) !important;
+}
+
+/* Mantine's variant="subtle" ships its own hover background at a specificity
+   that beat a plain single-class selector even with !important in practice —
+   matching its [data-variant] attribute selector too, not just adding
+   !important, is what actually wins here. */
+.fs-play-button-module-wide-text-button[data-variant='subtle']:hover {
+    background: rgb(60 60 60 / 92%) !important;
+}
+
+.fs-play-button-module-wide-text-button:active {
+    background: rgb(30 30 30 / 92%) !important;
+}
+
+.fs-play-button-module-wide-text-button-label {
+    color: var(--theme-colors-foreground) !important;
+}
+
+/* These icons (Next/Last) are stroke-only Lucide icons (fill: none by
+   design) — same mistake as before, fixed the same way: color/stroke only,
+   never force fill unless the icon is genuinely a solid-filled glyph. */
+.fs-play-button-module-wide-text-button-label svg {
+    fill: none !important;
+    stroke: var(--theme-colors-foreground) !important;
+}
+
+/* ---------- Base typography ---------- */
+body,
+.mantine-AppShell-root {
+    font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+
+    /* Segoe UI Variable ships generous vertical metrics to support many
+       complex scripts (incl. Arabic). Feishin's grid/card layouts compute
+       fixed-height, overflow:hidden text boxes assuming its default font's
+       tighter metrics — without this, swapping fonts clips text (worse for
+       tall/descender-heavy glyphs, worse again at higher zoom levels). */
+    line-height: 1.3 !important;
+}
+
+/* ---------- Fluent focus ring (Win11 uses an offset 2px accent rectangle) ---------- */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+.fs-button-module-root:focus-visible {
+    outline: 2px solid var(--theme-colors-primary) !important;
+    outline-offset: 2px !important;
+    border-radius: 4px;
+}
+
+/* ---------- Window titlebar (Win11 caption buttons are square, no radius) ---------- */
+.fs-window-bar-module-window-bar {
+    background: transparent !important;
+}
+
+.fs-window-bar-module-window-bar button {
+    border-radius: 0 !important;
+    transition: background-color 0.1s ease;
+}
+
+.fs-window-bar-module-window-bar button:hover {
+    background-color: rgb(255 255 255 / 8%) !important;
+}
+
+/* ---------- Sidebar: Win11 nav pane sits on Mica, slightly darker than content ---------- */
+.fs-sidebar-module-container,
+.fs-sidebar-module-accordion-content a {
+    background-color: transparent;
+}
+
+.fs-sidebar-module-accordion-content a {
+    border-radius: 4px;
+}
+
+.fs-sidebar-module-accordion-content a[data-active='true'] {
+    background-color: rgb(0 120 212 / 18%) !important;
+    border-left: 3px solid var(--theme-colors-primary);
+}
+
+/* ---------- Acrylic/Mica-style translucent surfaces ---------- */
+.fs-player-bar-module-container {
+    background: rgb(32 32 32 / 70%) !important;
+    border-top: 1px solid rgb(255 255 255 / 6%);
+    backdrop-filter: blur(40px) saturate(125%);
+}
+
+.fs-modal-module-content,
+.fs-select-module-dropdown,
+.fs-popover-module-dropdown,
+.fs-dialog-module-root,
+.fs-context-menu-module-content,
+.fs-dropdown-menu-module-menu-dropdown {
+    background: rgb(44 44 44 / 80%) !important;
+    border: 1px solid rgb(255 255 255 / 8%);
+    border-radius: 8px !important;
+    box-shadow:
+        0 8px 16px rgb(0 0 0 / 26%),
+        0 0 2px rgb(0 0 0 / 22%);
+    backdrop-filter: blur(30px) saturate(125%);
+}
+
+/* Sidebar sections (My Library, Playlists) also use Accordion, but should sit
+   flush with the sidebar background, not look like a flyout/card. */
+.fs-accordion-module-panel {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+}
+
+.fs-context-menu-module-content,
+.fs-dropdown-menu-module-menu-dropdown {
+    padding: 4px !important;
+}
+
+/* Nested dropdowns (e.g. the server selector rendered inside the app menu's
+   own dropdown) can't compose backdrop-filter through an already-filtered
+   ancestor — Chromium only lets backdrop-filter sample within the nearest
+   filtered/backdrop-filtered stacking context, and there's no new real
+   content to blur inside one that's already blurred, so it just renders
+   flat. Real Fluent avoids double-blur for the same reason: nested flyouts
+   get a solid, slightly lighter shade instead of stacked blur. */
+.fs-dropdown-menu-module-menu-dropdown .fs-dropdown-menu-module-menu-dropdown,
+.fs-dropdown-menu-module-menu-dropdown .fs-context-menu-module-content,
+.fs-context-menu-module-content .fs-dropdown-menu-module-menu-dropdown,
+.fs-context-menu-module-content .fs-context-menu-module-content {
+    background: rgb(56 56 56 / 100%) !important;
+    box-shadow: var(--fluent-shadow-16);
+    backdrop-filter: none !important;
+}
+
+/* Menu item hover: native Win11 uses a translucent overlay blended into the
+   acrylic flyout, not a separate flat/opaque color swatch. The app's own
+   .menu-item / .item hover both use a solid --theme-colors-surface fill,
+   which reads as a hard disconnected block against our blurred menu
+   background — replace with a subtle reveal-style translucent highlight. */
+.fs-context-menu-module-item,
+.fs-dropdown-menu-module-menu-item {
+    border-radius: var(--theme-radius-sm) !important;
+    transition: background-color var(--fluent-duration-faster) var(--fluent-curve-easy-ease);
+}
+
+.fs-context-menu-module-item:hover,
+.fs-context-menu-module-item[data-highlighted],
+.fs-dropdown-menu-module-menu-item:hover {
+    background: rgb(255 255 255 / 8%) !important;
+}
+
+.mantine-Modal-overlay {
+    background: rgb(0 0 0 / 40%) !important;
+    backdrop-filter: blur(4px);
+}
+
+.mantine-Modal-content {
+    border: 1px solid rgb(255 255 255 / 8%);
+    border-radius: 8px !important;
+}
+
+/* ---------- Controls: Win11 uses 4px radius on buttons/inputs, subtle 1px borders ---------- */
+.fs-button-module-root,
+.fs-text-input-module-input,
+.mantine-Input-input,
+.fs-textarea-module-input,
+.fs-select-module-root div input {
+    border-radius: 4px !important;
+}
+
+/* Button states — normal / hover / pressed for each variant actually in use.
+   Matching Mantine's [data-variant] attribute on the selector (not just
+   adding !important) is what reliably wins against its own built-in variant
+   styles, per what we found with the wide-text-button hover earlier. */
+.fs-button-module-root[data-variant='filled'] {
+    background-color: var(--theme-colors-primary) !important;
+    border-radius: 4px !important;
+    transition:
+        background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease),
+        transform var(--fluent-duration-faster) var(--fluent-curve-easy-ease);
+}
+
+.fs-button-module-root[data-variant='filled']:hover {
+    filter: brightness(1.12);
+}
+
+.fs-button-module-root[data-variant='filled']:active {
+    filter: brightness(0.92);
+    transform: scale(0.98);
+}
+
+.fs-button-module-root[data-variant='outline'] {
+    border: 1px solid rgb(255 255 255 / 14%) !important;
+    border-radius: 4px !important;
+    transition: background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-button-module-root[data-variant='outline']:hover {
+    background: rgb(255 255 255 / 6%) !important;
+}
+
+.fs-button-module-root[data-variant='outline']:active {
+    background: rgb(255 255 255 / 3%) !important;
+}
+
+.fs-button-module-root[data-variant='subtle'],
+.fs-button-module-root[data-variant='default'] {
+    border-radius: 4px !important;
+    transition: background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-button-module-root[data-variant='subtle']:hover,
+.fs-button-module-root[data-variant='default']:hover {
+    background: rgb(255 255 255 / 6%) !important;
+}
+
+.fs-button-module-root[data-variant='subtle']:active,
+.fs-button-module-root[data-variant='default']:active {
+    background: rgb(255 255 255 / 3%) !important;
+}
+
+/* Text inputs: normal / hover / focus. Win11 lightens the border slightly
+   on hover as a pre-focus hint, before the accent border-color on focus. */
+.fs-text-input-module-input,
+.mantine-Input-input,
+.fs-textarea-module-input {
+    background: rgb(255 255 255 / 5%) !important;
+    border: 1px solid rgb(255 255 255 / 12%) !important;
+    transition:
+        border-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease),
+        background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-text-input-module-input:hover,
+.mantine-Input-input:hover,
+.fs-textarea-module-input:hover {
+    border-color: rgb(255 255 255 / 22%) !important;
+}
+
+.fs-text-input-module-input:focus,
+.mantine-Input-input:focus,
+.fs-textarea-module-input:focus {
+    background: rgb(255 255 255 / 7%) !important;
+    border-color: var(--theme-colors-primary) !important;
+}
+
+/* Text-like inputs already get a clean border-color change on focus above —
+   the global Fluent focus-visible outline (2px, offset 2px) was stacking on
+   top of that as a second concentric ring, the "double border" look.
+   Win11 text fields use a single border treatment, not border + outline. */
+.fs-text-input-module-input:focus-visible,
+.mantine-Input-input:focus-visible,
+.fs-textarea-module-input:focus-visible {
+    outline: none !important;
+}
+
+/* ---------- Cards: Fluent surfaces (Settings cards, File Explorer previews) use 8px radius ---------- */
+.fs-poster-card-module-image,
+.fs-poster-card-module-image-container,
+.fs-item-card-controls-module-container,
+.fs-grid-card-controls-module-grid-card-controls-container,
+.fs-image-module-image:not(.ag-cell *, .fs-left-controls-module-image *) {
+    border-radius: 8px !important;
+}
+
+/* NOTE: item-card-controls-module-container intentionally gets no background/
+   blur of its own — Feishin already darkens the artwork on hover via
+   .image-container::before, and stacking another opaque+blurred layer on top
+   of that fully erases the art (the "flat black square" artifact). */
+
+/* Lighten Feishin's built-in hover scrim so artwork stays visible underneath
+   the controls, closer to how Windows hover states keep content legible. */
+.fs-item-card-module-image-container:hover::before {
+    opacity: 0.45 !important;
+}
+
+/* backdrop-filter on the ::before overlay above didn't render the blur
+   reliably (only the opacity half of that rule took effect) — applying
+   filter: blur() directly to the actual image element sidesteps whatever
+   compositing/stacking-context issue that pseudo-element route hit. */
+.fs-item-card-module-image {
+    transition: filter var(--fluent-duration-normal) var(--fluent-curve-easy-ease);
+}
+
+.fs-item-card-module-image-container:hover .fs-item-card-module-image {
+    filter: blur(4px) !important;
+}
+
+/* Fluent "reveal" style circular hover backgrounds on the overlay buttons */
+
+/* .secondary-button uses `all: unset`, which collapses it to display:inline
+   — that's what produced the elongated/oval hover hit-area instead of a
+   circle. Force it (and the favorite heart, same issue) into a fixed-size
+   flex box so border-radius: 9999px actually renders a true circle. */
+.fs-item-card-controls-module-secondary-button,
+.fs-item-card-controls-module-favorite {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+
+    /* These sit at right:0/bottom:0/top:0 etc (Feishin's own positioning) —
+       the padding we just zeroed out was also what inset them from the
+       card's edge, so margin has to make up for it or they sit flush
+       against the corner instead of comfortably inset. */
+    margin: 8px !important;
+    border-radius: 9999px !important;
+    transition: background-color var(--fluent-duration-faster) var(--fluent-curve-easy-ease);
+}
+
+.fs-item-card-controls-module-secondary-button:hover,
+.fs-item-card-controls-module-favorite:hover {
+    background-color: rgb(255 255 255 / 16%) !important;
+}
+
+/* Center/left/right playback buttons: white with elevation, like native
+   Windows media control overlays, instead of flat accent-blue fills. */
+/* Doubled class selector here is a deliberate specificity boost, not a typo:
+   the theme's stylesheets get appended to <head> early at app boot, before
+   Mantine injects this component's own filled-variant background the first
+   time it actually renders — so on a cascade tie by document order alone,
+   Mantine's later-injected rule can win even against !important. Raising
+   specificity settles it independent of injection order. custom.css doesn't
+   need this since it's appended at the very end of <body>, which always
+   wins on document order regardless. */
+.fs-item-card-controls-module-play-button.fs-item-card-controls-module-play-button {
+    background-color: rgb(255 255 255 / 95%) !important;
+    box-shadow: var(--fluent-shadow-4) !important;
+}
+
+/* .play-button is shared by the center play button AND the left/right
+   secondary buttons (share, skip). The center play icon is a solid-filled
+   triangle, but share/skip are stroke-only Lucide icons (fill: none by
+   design) — forcing fill on those made their hollow shapes render as
+   filled blobs clashing with the stroke, the "glyph artifact" look. */
+.fs-item-card-controls-module-play-button.fs-item-card-controls-module-primary svg {
+    fill: rgb(20 20 20) !important;
+}
+
+.fs-item-card-controls-module-play-button.fs-item-card-controls-module-secondary svg {
+    fill: none !important;
+    stroke: rgb(20 20 20) !important;
+}
+
+.fs-item-card-controls-module-play-button.fs-item-card-controls-module-play-button:hover {
+    background-color: rgb(255 255 255) !important;
+    box-shadow: var(--fluent-shadow-8) !important;
+}
+
+.fs-left-controls-module-image,
+.fs-left-controls-module-playerbar-image {
+    border-radius: 4px !important;
+}
+
+/* ---------- Data grid / tables: flatten to match Win11 list views ---------- */
+.ag-header {
+    background-color: transparent !important;
+    border-bottom: 1px solid rgb(255 255 255 / 8%) !important;
+}
+
+.mantine-Table-th {
+    background-color: transparent !important;
+}
+
+table,
+.ag-root-wrapper {
+    border: 0 !important;
+}
+
+/* ---------- SegmentedControl / Tabs: Win11 pivot-style pill selection ---------- */
+.mantine-SegmentedControl-root,
+.fs-segmented-control-module-root {
+    background: rgb(255 255 255 / 5%) !important;
+    border-radius: 6px !important;
+}
+
+.mantine-SegmentedControl-indicator,
+.fs-segmented-control-module-label[data-active='true'] {
+    border-radius: 4px !important;
+}
+
+/* The virtualized table's row heights are fixed JS constants (40/64/88px per
+   density), not CSS-derived, so nothing here can misalign them directly. The
+   "last row always cut off" issue is the scroll container not reserving
+   enough bottom space to clear the floating player bar — the same fix the
+   community glassy-dark theme applies to this exact class. */
+.fs-item-table-list-module-height-100 {
+    padding-bottom: 65px !important;
+}
+
+
+/* =====================================================================
+   Fluent 2 motion & elevation tokens
+   Values match Microsoft's published Fluent 2 global tokens
+   (https://fluent2.microsoft.design) — radius/duration/curve/shadow scale.
+   ===================================================================== */
+:root {
+    --fluent-duration-ultra-fast: 50ms;
+    --fluent-duration-faster: 100ms;
+    --fluent-duration-fast: 150ms;
+    --fluent-duration-normal: 200ms;
+    --fluent-duration-gentle: 250ms;
+    --fluent-curve-easy-ease: cubic-bezier(0.33, 0, 0.67, 1);
+    --fluent-curve-decelerate-mid: cubic-bezier(0, 0, 0, 1);
+    --fluent-curve-accelerate-mid: cubic-bezier(1, 0, 1, 1);
+    --fluent-shadow-2: 0 0 2px rgb(0 0 0 / 24%), 0 1px 2px rgb(0 0 0 / 28%);
+    --fluent-shadow-4: 0 0 2px rgb(0 0 0 / 24%), 0 2px 4px rgb(0 0 0 / 28%);
+    --fluent-shadow-8: 0 0 2px rgb(0 0 0 / 24%), 0 4px 8px rgb(0 0 0 / 28%);
+    --fluent-shadow-16: 0 0 2px rgb(0 0 0 / 24%), 0 8px 16px rgb(0 0 0 / 28%);
+    --fluent-shadow-28: 0 0 8px rgb(0 0 0 / 24%), 0 14px 28px rgb(0 0 0 / 28%);
+}
+
+/* ---------- Checkbox: Fluent uses a 4px square with accent fill when checked ---------- */
+.fs-checkbox-module-input {
+    border-radius: var(--theme-radius-xs) !important;
+    transition:
+        background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease),
+        border-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-checkbox-module-input:checked {
+    background-color: var(--theme-colors-primary-filled) !important;
+    border-color: var(--theme-colors-primary-filled) !important;
+}
+
+/* ---------- Switch: Fluent toggle is a full pill with a circular thumb ---------- */
+.fs-switch-module-track {
+    border-radius: 9999px !important;
+    transition: background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-switch-module-thumb {
+    border-radius: 9999px !important;
+    transition: transform var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+/* ---------- Rating: accent-filled stars instead of default fill color ---------- */
+.fs-rating-module-symbol-body svg[data-filled='true'] {
+    fill: var(--theme-colors-primary-filled) !important;
+    stroke: var(--theme-colors-primary-filled) !important;
+}
+
+/* ---------- Badge / Pill: Fluent badges are fully rounded (circular) ---------- */
+.fs-badge-module-root,
+.fs-pill-module-root,
+.mantine-Badge-root {
+    background: rgb(255 255 255 / 8%) !important;
+    border-radius: 9999px !important;
+}
+
+/* ---------- Toast / notifications: Fluent flyout card with shadow16 ---------- */
+.fs-toast-module-root {
+    background: rgb(44 44 44 / 92%) !important;
+    border: 1px solid rgb(255 255 255 / 8%);
+    border-radius: var(--theme-radius-xl) !important;
+    box-shadow: var(--fluent-shadow-16);
+    backdrop-filter: blur(30px) saturate(125%);
+}
+
+/* ---------- Tooltip: small dark flyout, shadow8, 4px radius per Fluent tooltip spec ---------- */
+.fs-tooltip-module-tooltip {
+    background: rgb(60 60 60 / 95%) !important;
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: var(--theme-radius-sm) !important;
+    box-shadow: var(--fluent-shadow-8);
+    backdrop-filter: blur(20px);
+}
+
+/* ---------- Popover / HoverCard: consistent flyout treatment ---------- */
+.fs-popover-module-dropdown,
+.fs-hover-card-module-dropdown {
+    background: rgb(44 44 44 / 88%) !important;
+    border: 1px solid rgb(255 255 255 / 8%);
+    border-radius: var(--theme-radius-xl) !important;
+    box-shadow: var(--fluent-shadow-16);
+    backdrop-filter: blur(30px) saturate(125%);
+}
+
+/* ---------- Progress bar: accent fill, fully rounded track ---------- */
+.fs-progress-module-root {
+    background: rgb(255 255 255 / 8%) !important;
+    border-radius: 9999px !important;
+}
+
+.fs-progress-module-section {
+    background-color: var(--theme-colors-primary-filled) !important;
+    border-radius: 9999px !important;
+}
+
+/* ---------- Sliders (generic + player seek/volume): native Win11 look —
+   thin flat track, light (not dark) unfilled portion, thumb permanently
+   visible instead of Feishin's default hover-only reveal. Note: the
+   unfilled track lives on Mantine's own un-renamed .track/::before classes
+   for both components — Feishin only locally renames the filled "bar" and
+   "thumb" parts, so the base track has to be targeted via Mantine's
+   default classnames rather than an fs-*-module-* one. ---------- */
+.mantine-Slider-track {
+    height: 3px !important;
+    border-radius: 9999px !important;
+}
+
+.fs-playerbar-slider-module-slider-container {
+    --slider-value-width: 1rem;
+}
+
+.mantine-Slider-track::before {
+    background-color: rgb(255 255 255 / 35%) !important;
+    border-radius: 9999px !important;
+}
+
+.mantine-Slider-bar,
+.fs-playerbar-slider-module-bar {
+    background-color: var(--theme-colors-primary-filled) !important;
+    border-radius: 9999px !important;
+}
+
+.mantine-Slider-thumb,
+.fs-slider-module-thumb,
+.fs-playerbar-slider-module-thumb {
+    width: 18px !important;
+    height: 18px !important;
+    background-color: var(--theme-colors-primary-filled) !important;
+    border: 4px solid rgb(70 70 70 / 90%) !important;
+    border-radius: 9999px !important;
+    box-shadow: var(--fluent-shadow-4);
+    opacity: 1 !important;
+    transition:
+        border var(--fluent-duration-fast) var(--fluent-curve-easy-ease),
+        transform var(--fluent-duration-fast) var(--fluent-curve-easy-ease),
+        box-shadow var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.mantine-Slider-thumb:hover,
+.fs-slider-module-thumb:hover,
+.fs-playerbar-slider-module-thumb:hover {
+    border-width: 3px !important;
+    box-shadow: var(--fluent-shadow-8);
+
+    /* Mantine centers the thumb via transform: translate(-50%, -50%) — a bare
+       "scale(1.2)" here replaces that whole value instead of adding to it,
+       which is what was knocking the thumb off-center on hover. */
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Volume/seek value tooltip that pops up while dragging */
+.fs-slider-module-label,
+.fs-playerbar-slider-module-label {
+    padding: 4px 8px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+}
+
+/* ---------- Divider: subtle 1px hairline matching Fluent divider color ---------- */
+.fs-divider-module-root,
+.mantine-Divider-root {
+    border-color: rgb(255 255 255 / 8%) !important;
+}
+
+/* ---------- Select / MultiSelect dropdowns: same flyout treatment as popovers ---------- */
+.fs-select-module-dropdown,
+.fs-multi-select-module-input {
+    background: rgb(44 44 44 / 88%) !important;
+    border-radius: var(--theme-radius-xl) !important;
+    backdrop-filter: blur(30px) saturate(125%);
+}
+
+.fs-select-module-option {
+    border-radius: var(--theme-radius-sm) !important;
+    transition: background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-select-module-option[data-combobox-selected='true'],
+.fs-select-module-option:hover {
+    background-color: rgb(255 255 255 / 8%) !important;
+}
+
+/* ---------- Action icon: Fluent "reveal" style circular hover background ---------- */
+.fs-action-icon-module-root {
+    border-radius: var(--theme-radius-sm) !important;
+    transition: background-color var(--fluent-duration-faster) var(--fluent-curve-easy-ease);
+}
+
+.fs-action-icon-module-root:hover {
+    background-color: rgb(255 255 255 / 8%) !important;
+}
+
+/* ---------- Paper: general elevated surface, subtle resting shadow ---------- */
+.fs-paper-module-root {
+    background: var(--theme-colors-surface) !important;
+    border-radius: var(--theme-radius-lg) !important;
+    box-shadow: var(--fluent-shadow-2);
+}
+
+/* ---------- Skeleton loaders: Fluent shimmer instead of flat pulse ---------- */
+.fs-skeleton-module-skeleton {
+    background: linear-gradient(
+        100deg,
+        rgb(255 255 255 / 4%) 30%,
+        rgb(255 255 255 / 12%) 50%,
+        rgb(255 255 255 / 4%) 70%
+    );
+    background-size: 200% 100%;
+    border-radius: var(--theme-radius-sm) !important;
+    animation: fluent-shimmer 1.6s linear infinite;
+}
+
+@keyframes fluent-shimmer {
+    from {
+        background-position: 150% 0;
+    }
+
+    to {
+        background-position: -50% 0;
+    }
+}
+
+/* ---------- Tabs: Fluent "pivot" style uses a bottom accent underline, not a filled pill ---------- */
+.fs-tabs-module-tab {
+    background: transparent !important;
+    border-bottom: 2px solid transparent !important;
+    border-radius: 0 !important;
+    transition: border-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-tabs-module-tab[data-active='true'] {
+    background: transparent !important;
+    border-bottom-color: var(--theme-colors-primary-filled) !important;
+}
+
+.fs-tabs-module-tab:hover {
+    background: rgb(255 255 255 / 5%) !important;
+}
+
+/* ---------- Table: thin hairline borders, transparent header, no zebra striping ---------- */
+.fs-table-module-th {
+    background-color: transparent !important;
+    border-bottom: 1px solid rgb(255 255 255 / 8%) !important;
+}
+
+.fs-table-module-td {
+    border-bottom: 1px solid rgb(255 255 255 / 5%) !important;
+}
+
+/* ---------- Sidebar nav items: Fluent NavDrawer selected-item treatment ---------- */
+.fs-sidebar-item-module-root {
+    border-radius: var(--theme-radius-sm) !important;
+    transition: background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-sidebar-item-module-root:hover {
+    background-color: rgb(255 255 255 / 6%) !important;
+}
+
+.fs-sidebar-item-module-root[data-active='true'] {
+    position: relative;
+    background-color: rgb(0 120 212 / 16%) !important;
+}
+
+.fs-sidebar-item-module-root[data-active='true']::before {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    width: 3px;
+    height: 60%;
+    content: '';
+    background: var(--theme-colors-primary-filled);
+    border-radius: 0 4px 4px 0;
+}
+
+.fs-sidebar-item-module-label {
+    font-weight: 400 !important;
+}
+
+/* ---------- Titlebar: fully transparent so it reads as part of the Mica surface ---------- */
+.fs-titlebar-module-titlebar-container {
+    background: transparent !important;
+    border-bottom: 1px solid rgb(255 255 255 / 4%);
+}
+
+/* ---------- Play button: circular, accent-filled, subtle press scale ---------- */
+.fs-play-button-module-play-button {
+    background-color: var(--theme-colors-primary-filled) !important;
+    border-radius: 9999px !important;
+    transition: transform var(--fluent-duration-faster) var(--fluent-curve-easy-ease);
+}
+
+.fs-play-button-module-play-button:active {
+    transform: scale(0.92);
+}
+
+/* ---------- Item cards (album/artist grid tiles): shadow grows on hover like a Fluent card ---------- */
+.fs-item-card-module-container {
+    border-radius: var(--theme-radius-xl) !important;
+    transition:
+        box-shadow var(--fluent-duration-normal) var(--fluent-curve-decelerate-mid),
+        transform var(--fluent-duration-normal) var(--fluent-curve-decelerate-mid);
+}
+
+.fs-item-card-module-row a {
+    line-height: 1.4 !important;
+}
+
+/* The card itself needs overflow: hidden for its rounded image corners,
+   but that also clips its own box-shadow at the card's own edge — the
+   "weird cut" in the shadow. filter: drop-shadow() isn't subject to the
+   element's own overflow clipping, so it renders cleanly outside the box. */
+
+/* filter (like transform) creates a new containing block for absolutely-
+   positioned descendants in Chromium — since the card's hover controls
+   (play/share/skip/heart/options) are all position:absolute, using
+   filter: drop-shadow() here was shifting what they're positioned
+   relative to, only while hovering, which is what threw them way off
+   during interaction. Reverting to box-shadow (accepting that its
+   clipping fix from earlier is undone) since a functional bug beats a
+   cosmetic one. */
+
+.fs-item-card-module-container:hover {
+    background-color: rgb(255 255 255 / 10%) !important;
+    border: 1px solid rgb(255 255 255 / 10%);
+    box-shadow: 0 0 0 0 !important;
+    transform: translateY(0);
+}
+
+.fs-item-card-module-image,
+.fs-item-card-module-image-container {
+    border-radius: var(--theme-radius-lg) !important;
+}
+
+/* Windows Media Player-style thin outline around the cover art and the
+   overlay buttons, instead of relying on fill/shadow alone for definition. */
+.fs-item-card-module-image-container {
+    border: 1px solid rgb(255 255 255 / 10%);
+}
+
+.fs-item-card-controls-module-play-button,
+.fs-item-card-controls-module-secondary-button {
+    border: 1px solid rgb(255 255 255 / 25%) !important;
+}
+
+.fs-item-card-module-container.fs-item-card-module-poster {
+    padding: 4px !important;
+}
+
+.fs-item-card-module-detail-container {
+    padding: var(--theme-spacing-sm) !important;
+}
+
+/* ---------- Playlist rows: Feishin only recolors the label text on selection
+   (.name-active), there's no row-level highlight by default. Use the same
+   plain, neutral reveal-style highlight Windows 11 uses for a selected menu
+   item — no accent tint, no left bar, just a subtle rounded fill. ---------- */
+.fs-sidebar-playlist-list-module-row:has(.fs-sidebar-playlist-list-module-name-active) {
+    background-color: rgb(255 255 255 / 8%) !important;
+    border-radius: var(--theme-radius-md) !important;
+}
+
+.fs-sidebar-playlist-list-module-row:has(.fs-sidebar-playlist-list-module-name-active)::before {
+    display: none !important;
+}
+
+.fs-sidebar-playlist-list-module-name-active {
+    font-weight: 600;
+    color: var(--theme-colors-primary-filled) !important;
+}
+
+/* ---------- Featured genres (home page pills): the colored left accent bar
+   is a hashed-per-genre --genre-color custom property set inline. Fluent
+   lists don't use rainbow category identity, so unify it to the accent. ---------- */
+.fs-featured-genres-module-genre-container {
+    --genre-color: var(--theme-colors-primary-filled) !important;
+
+    background-color: rgb(255 255 255 / 4%) !important;
+    border-radius: var(--theme-radius-md) !important;
+}
+
+/* ---------- Favorite/rating badges: the default favorite indicator is a
+   giant rotated square creating a diagonal "sale ribbon" corner effect, and
+   the rating badge is a flat solid-color block — neither reads as Windows
+   11. Reshape the favorite badge into a small heart via a CSS mask (no new
+   markup needed) and turn the rating badge into a translucent pill. ---------- */
+.fs-item-card-module-favorite-badge {
+    top: 8px !important;
+    left: 8px !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: var(--theme-colors-primary-filled) !important;
+    box-shadow: var(--fluent-shadow-4) !important;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-6.5-4.35-9.5-8.5C.7 9.8 1.4 6 4.6 4.9 7 4 9.4 4.9 12 7.4 14.6 4.9 17 4 19.4 4.9 22.6 6 23.3 9.8 21.5 12.5 18.5 16.65 12 21 12 21z'/%3E%3C/svg%3E");
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    transform: none !important;
+}
+
+.fs-item-card-module-rating-badge {
+    text-shadow: none !important;
+    background-color: rgb(0 0 0 / 55%) !important;
+    border-radius: 9999px !important;
+    box-shadow: var(--fluent-shadow-4) !important;
+    backdrop-filter: blur(8px);
+}
+
+.fs-item-card-module-rating-badge::before {
+    margin-right: 2px;
+    color: var(--theme-colors-primary-filled);
+    content: '\2605';
+}
+
+/* ---------- Context menu preview panel ---------- */
+.fs-context-menu-preview-module-container {
+    background: rgb(44 44 44 / 92%) !important;
+    border-radius: var(--theme-radius-xl) !important;
+    backdrop-filter: blur(30px) saturate(125%);
+}
+
+.fs-context-menu-preview-module-image {
+    border-radius: var(--theme-radius-lg) !important;
+}
