@@ -1,0 +1,727 @@
+/* Windows 11 Fluent-style approximation for Feishin — LIGHT MODE */
+/* WORK IN PROGRESS — first-pass conversion from the dark theme, not yet
+   verified against real content in most views. Expect rough edges. */
+/* stylelint-disable selector-class-pattern */
+
+/* ---------- Play/Next/Last text buttons ---------- */
+.fs-play-button-module-wide-text-button {
+    background: rgb(255 255 255 / 80%) !important;
+    border: 1px solid rgb(0 0 0 / 10%);
+    border-radius: var(--theme-radius-md) !important;
+    backdrop-filter: blur(20px) saturate(125%);
+    transition: background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease) !important;
+}
+
+.fs-play-button-module-wide-text-button[data-variant='subtle']:hover {
+    background: rgb(235 235 235 / 90%) !important;
+}
+
+.fs-play-button-module-wide-text-button:active {
+    background: rgb(215 215 215 / 90%) !important;
+}
+
+.fs-play-button-module-wide-text-button-label {
+    color: var(--theme-colors-foreground) !important;
+}
+
+.fs-play-button-module-wide-text-button-label svg {
+    fill: none !important;
+    stroke: var(--theme-colors-foreground) !important;
+}
+
+/* ---------- Base typography (same reasoning as dark: Segoe UI Variable's
+   larger vertical metrics need compensated line-height) ---------- */
+body,
+.mantine-AppShell-root {
+    font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.3 !important;
+}
+
+/* ---------- Fluent focus ring ---------- */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+.fs-button-module-root:focus-visible {
+    outline: 2px solid var(--theme-colors-primary) !important;
+    outline-offset: 2px !important;
+    border-radius: 4px;
+}
+
+/* ---------- Window titlebar ---------- */
+.fs-window-bar-module-window-bar {
+    background: transparent !important;
+}
+
+.fs-window-bar-module-window-bar button {
+    border-radius: 0 !important;
+    transition: background-color 0.1s ease;
+}
+
+.fs-window-bar-module-window-bar button:hover {
+    background-color: rgb(0 0 0 / 6%) !important;
+}
+
+/* ---------- Sidebar ---------- */
+.fs-sidebar-module-container,
+.fs-sidebar-module-accordion-content a {
+    background-color: transparent;
+}
+
+.fs-sidebar-module-accordion-content a {
+    border-radius: 4px;
+}
+
+.fs-sidebar-module-accordion-content a[data-active='true'] {
+    background-color: rgb(0 95 184 / 14%) !important;
+    border-left: 3px solid var(--theme-colors-primary);
+}
+
+/* ---------- Acrylic/Mica-style translucent surfaces (light) ---------- */
+.fs-player-bar-module-container {
+    background: rgb(255 255 255 / 75%) !important;
+    border-top: 1px solid rgb(0 0 0 / 8%);
+    backdrop-filter: blur(40px) saturate(125%);
+}
+
+.fs-modal-module-content,
+.fs-select-module-dropdown,
+.fs-popover-module-dropdown,
+.fs-dialog-module-root,
+.fs-context-menu-module-content,
+.fs-dropdown-menu-module-menu-dropdown {
+    background: rgb(255 255 255 / 82%) !important;
+    border: 1px solid rgb(0 0 0 / 8%);
+    border-radius: 8px !important;
+    box-shadow:
+        0 8px 16px rgb(0 0 0 / 14%),
+        0 0 2px rgb(0 0 0 / 12%);
+    backdrop-filter: blur(30px) saturate(125%);
+}
+
+.fs-accordion-module-panel {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+}
+
+.fs-context-menu-module-content,
+.fs-dropdown-menu-module-menu-dropdown {
+    padding: 4px !important;
+}
+
+/* Nested dropdowns can't compose backdrop-filter through an already-filtered
+   ancestor (same Chromium limitation as dark mode) — solid fallback shade. */
+.fs-dropdown-menu-module-menu-dropdown .fs-dropdown-menu-module-menu-dropdown,
+.fs-dropdown-menu-module-menu-dropdown .fs-context-menu-module-content,
+.fs-context-menu-module-content .fs-dropdown-menu-module-menu-dropdown,
+.fs-context-menu-module-content .fs-context-menu-module-content {
+    background: rgb(240 240 240 / 100%) !important;
+    box-shadow: var(--fluent-shadow-16);
+    backdrop-filter: none !important;
+}
+
+.fs-context-menu-module-item,
+.fs-dropdown-menu-module-menu-item {
+    border-radius: var(--theme-radius-sm) !important;
+    transition: background-color var(--fluent-duration-faster) var(--fluent-curve-easy-ease);
+}
+
+.fs-context-menu-module-item:hover,
+.fs-context-menu-module-item[data-highlighted],
+.fs-dropdown-menu-module-menu-item:hover {
+    background: rgb(0 0 0 / 6%) !important;
+}
+
+.mantine-Modal-overlay {
+    background: rgb(0 0 0 / 30%) !important;
+    backdrop-filter: blur(4px);
+}
+
+.mantine-Modal-content {
+    border: 1px solid rgb(0 0 0 / 8%);
+    border-radius: 8px !important;
+}
+
+/* ---------- Controls ---------- */
+.fs-button-module-root,
+.fs-text-input-module-input,
+.mantine-Input-input,
+.fs-textarea-module-input,
+.fs-select-module-root div input {
+    border-radius: 4px !important;
+}
+
+.fs-button-module-root[data-variant='filled'] {
+    background-color: var(--theme-colors-primary) !important;
+    border-radius: 4px !important;
+    transition:
+        background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease),
+        transform var(--fluent-duration-faster) var(--fluent-curve-easy-ease);
+}
+
+.fs-button-module-root[data-variant='filled']:hover {
+    filter: brightness(1.12);
+}
+
+.fs-button-module-root[data-variant='filled']:active {
+    filter: brightness(0.92);
+    transform: scale(0.98);
+}
+
+.fs-button-module-root[data-variant='outline'] {
+    border: 1px solid rgb(0 0 0 / 14%) !important;
+    border-radius: 4px !important;
+    transition: background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-button-module-root[data-variant='outline']:hover {
+    background: rgb(0 0 0 / 5%) !important;
+}
+
+.fs-button-module-root[data-variant='outline']:active {
+    background: rgb(0 0 0 / 3%) !important;
+}
+
+.fs-button-module-root[data-variant='subtle'],
+.fs-button-module-root[data-variant='default'] {
+    border-radius: 4px !important;
+    transition: background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-button-module-root[data-variant='subtle']:hover,
+.fs-button-module-root[data-variant='default']:hover {
+    background: rgb(0 0 0 / 5%) !important;
+}
+
+.fs-button-module-root[data-variant='subtle']:active,
+.fs-button-module-root[data-variant='default']:active {
+    background: rgb(0 0 0 / 3%) !important;
+}
+
+/* Text inputs: normal / hover / focus */
+.fs-text-input-module-input,
+.mantine-Input-input,
+.fs-textarea-module-input {
+    background: rgb(0 0 0 / 3%) !important;
+    border: 1px solid rgb(0 0 0 / 14%) !important;
+    transition:
+        border-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease),
+        background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-text-input-module-input:hover,
+.mantine-Input-input:hover,
+.fs-textarea-module-input:hover {
+    border-color: rgb(0 0 0 / 24%) !important;
+}
+
+.fs-text-input-module-input:focus,
+.mantine-Input-input:focus,
+.fs-textarea-module-input:focus {
+    background: rgb(0 0 0 / 2%) !important;
+    border-color: var(--theme-colors-primary) !important;
+}
+
+.fs-text-input-module-input:focus-visible,
+.mantine-Input-input:focus-visible,
+.fs-textarea-module-input:focus-visible {
+    outline: none !important;
+}
+
+/* ---------- Cards ---------- */
+.fs-poster-card-module-image,
+.fs-poster-card-module-image-container,
+.fs-item-card-controls-module-container,
+.fs-grid-card-controls-module-grid-card-controls-container,
+.fs-image-module-image:not(.ag-cell *, .fs-left-controls-module-image *) {
+    border-radius: 8px !important;
+}
+
+/* Everything below this point through the play/secondary/favorite/rating
+   button rules sits ON TOP OF ALBUM ART, not app chrome — album art
+   brightness varies independently of the app's light/dark mode, so these
+   intentionally stay identical to the dark stylesheet. */
+.fs-item-card-module-image-container:hover::before {
+    opacity: 0.45 !important;
+}
+
+.fs-item-card-module-image {
+    transition: filter var(--fluent-duration-normal) var(--fluent-curve-easy-ease);
+}
+
+.fs-item-card-module-image-container:hover .fs-item-card-module-image {
+    filter: blur(4px) !important;
+}
+
+.fs-item-card-controls-module-secondary-button,
+.fs-item-card-controls-module-favorite {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    margin: 8px !important;
+    border-radius: 9999px !important;
+    transition: background-color var(--fluent-duration-faster) var(--fluent-curve-easy-ease);
+}
+
+.fs-item-card-controls-module-secondary-button:hover,
+.fs-item-card-controls-module-favorite:hover {
+    background-color: rgb(255 255 255 / 16%) !important;
+}
+
+.fs-item-card-controls-module-play-button.fs-item-card-controls-module-play-button {
+    background-color: rgb(255 255 255 / 95%) !important;
+    box-shadow: var(--fluent-shadow-4) !important;
+}
+
+.fs-item-card-controls-module-play-button.fs-item-card-controls-module-primary svg {
+    fill: rgb(20 20 20) !important;
+}
+
+.fs-item-card-controls-module-play-button.fs-item-card-controls-module-secondary svg {
+    fill: none !important;
+    stroke: rgb(20 20 20) !important;
+}
+
+.fs-item-card-controls-module-play-button.fs-item-card-controls-module-play-button:hover {
+    background-color: rgb(255 255 255) !important;
+    box-shadow: var(--fluent-shadow-8) !important;
+}
+
+.fs-left-controls-module-image,
+.fs-left-controls-module-playerbar-image {
+    border-radius: 4px !important;
+}
+
+/* ---------- Data grid / tables ---------- */
+.ag-header {
+    background-color: transparent !important;
+    border-bottom: 1px solid rgb(0 0 0 / 8%) !important;
+}
+
+.mantine-Table-th {
+    background-color: transparent !important;
+}
+
+table,
+.ag-root-wrapper {
+    border: 0 !important;
+}
+
+/* ---------- SegmentedControl / Tabs ---------- */
+.mantine-SegmentedControl-root,
+.fs-segmented-control-module-root {
+    background: rgb(0 0 0 / 4%) !important;
+    border-radius: 6px !important;
+}
+
+.mantine-SegmentedControl-indicator,
+.fs-segmented-control-module-label[data-active='true'] {
+    border-radius: 4px !important;
+}
+
+.fs-item-table-list-module-height-100 {
+    padding-bottom: 65px !important;
+}
+
+
+/* =====================================================================
+   Fluent 2 motion & elevation tokens — same values as dark mode. Duration
+   and easing are mode-independent, and the shadow scale is already
+   black-based, which reads correctly as elevation on a light surface too.
+   ===================================================================== */
+:root {
+    --fluent-duration-ultra-fast: 50ms;
+    --fluent-duration-faster: 100ms;
+    --fluent-duration-fast: 150ms;
+    --fluent-duration-normal: 200ms;
+    --fluent-duration-gentle: 250ms;
+    --fluent-curve-easy-ease: cubic-bezier(0.33, 0, 0.67, 1);
+    --fluent-curve-decelerate-mid: cubic-bezier(0, 0, 0, 1);
+    --fluent-curve-accelerate-mid: cubic-bezier(1, 0, 1, 1);
+    --fluent-shadow-2: 0 0 2px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 14%);
+    --fluent-shadow-4: 0 0 2px rgb(0 0 0 / 12%), 0 2px 4px rgb(0 0 0 / 14%);
+    --fluent-shadow-8: 0 0 2px rgb(0 0 0 / 12%), 0 4px 8px rgb(0 0 0 / 14%);
+    --fluent-shadow-16: 0 0 2px rgb(0 0 0 / 12%), 0 8px 16px rgb(0 0 0 / 14%);
+    --fluent-shadow-28: 0 0 8px rgb(0 0 0 / 12%), 0 14px 28px rgb(0 0 0 / 14%);
+}
+
+/* ---------- Checkbox ---------- */
+.fs-checkbox-module-input {
+    border-radius: var(--theme-radius-xs) !important;
+    transition:
+        background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease),
+        border-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-checkbox-module-input:checked {
+    background-color: var(--theme-colors-primary-filled) !important;
+    border-color: var(--theme-colors-primary-filled) !important;
+}
+
+/* ---------- Switch ---------- */
+.fs-switch-module-track {
+    border-radius: 9999px !important;
+    transition: background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-switch-module-thumb {
+    border-radius: 9999px !important;
+    transition: transform var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+/* ---------- Rating ---------- */
+.fs-rating-module-symbol-body svg[data-filled='true'] {
+    fill: var(--theme-colors-primary-filled) !important;
+    stroke: var(--theme-colors-primary-filled) !important;
+}
+
+/* ---------- Badge / Pill ---------- */
+.fs-badge-module-root,
+.fs-pill-module-root,
+.mantine-Badge-root {
+    background: rgb(0 0 0 / 6%) !important;
+    border-radius: 9999px !important;
+}
+
+/* ---------- Toast / notifications ---------- */
+.fs-toast-module-root {
+    background: rgb(255 255 255 / 90%) !important;
+    border: 1px solid rgb(0 0 0 / 8%);
+    border-radius: var(--theme-radius-xl) !important;
+    box-shadow: var(--fluent-shadow-16);
+    backdrop-filter: blur(30px) saturate(125%);
+}
+
+/* ---------- Tooltip: Win11 light tooltips are a light gray flyout, not an
+   inverted-dark one ---------- */
+.fs-tooltip-module-tooltip {
+    background: rgb(249 249 249 / 97%) !important;
+    border: 1px solid rgb(0 0 0 / 10%);
+    border-radius: var(--theme-radius-sm) !important;
+    box-shadow: var(--fluent-shadow-8);
+    backdrop-filter: blur(20px);
+}
+
+/* ---------- Popover / HoverCard ---------- */
+.fs-popover-module-dropdown,
+.fs-hover-card-module-dropdown {
+    background: rgb(255 255 255 / 85%) !important;
+    border: 1px solid rgb(0 0 0 / 8%);
+    border-radius: var(--theme-radius-xl) !important;
+    box-shadow: var(--fluent-shadow-16);
+    backdrop-filter: blur(30px) saturate(125%);
+}
+
+/* ---------- Progress bar ---------- */
+.fs-progress-module-root {
+    background: rgb(0 0 0 / 8%) !important;
+    border-radius: 9999px !important;
+}
+
+.fs-progress-module-section {
+    background-color: var(--theme-colors-primary-filled) !important;
+    border-radius: 9999px !important;
+}
+
+/* ---------- Sliders ---------- */
+.mantine-Slider-track {
+    height: 3px !important;
+    border-radius: 9999px !important;
+}
+
+.fs-playerbar-slider-module-slider-container {
+    --slider-value-width: 1rem;
+}
+
+.mantine-Slider-track::before {
+    background-color: rgb(0 0 0 / 18%) !important;
+    border-radius: 9999px !important;
+}
+
+.mantine-Slider-bar,
+.fs-playerbar-slider-module-bar {
+    background-color: var(--theme-colors-primary-filled) !important;
+    border-radius: 9999px !important;
+}
+
+.mantine-Slider-thumb,
+.fs-slider-module-thumb,
+.fs-playerbar-slider-module-thumb {
+    width: 18px !important;
+    height: 18px !important;
+    background-color: var(--theme-colors-primary-filled) !important;
+    border: 4px solid rgb(255 255 255 / 95%) !important;
+    border-radius: 9999px !important;
+    box-shadow: var(--fluent-shadow-4);
+    opacity: 1 !important;
+    transition:
+        border var(--fluent-duration-fast) var(--fluent-curve-easy-ease),
+        transform var(--fluent-duration-fast) var(--fluent-curve-easy-ease),
+        box-shadow var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.mantine-Slider-thumb:hover,
+.fs-slider-module-thumb:hover,
+.fs-playerbar-slider-module-thumb:hover {
+    border-width: 3px !important;
+    box-shadow: var(--fluent-shadow-8);
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Volume/seek value tooltip that pops up while dragging */
+.fs-slider-module-label,
+.fs-playerbar-slider-module-label {
+    padding: 4px 8px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+}
+
+/* ---------- Divider ---------- */
+.fs-divider-module-root,
+.mantine-Divider-root {
+    border-color: rgb(0 0 0 / 10%) !important;
+}
+
+/* ---------- Select / MultiSelect dropdowns ---------- */
+.fs-select-module-dropdown,
+.fs-multi-select-module-input {
+    background: rgb(255 255 255 / 85%) !important;
+    border-radius: var(--theme-radius-xl) !important;
+    backdrop-filter: blur(30px) saturate(125%);
+}
+
+.fs-select-module-option {
+    border-radius: var(--theme-radius-sm) !important;
+    transition: background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-select-module-option[data-combobox-selected='true'],
+.fs-select-module-option:hover {
+    background-color: rgb(0 0 0 / 6%) !important;
+}
+
+/* ---------- Action icon ---------- */
+.fs-action-icon-module-root {
+    border-radius: var(--theme-radius-sm) !important;
+    transition: background-color var(--fluent-duration-faster) var(--fluent-curve-easy-ease);
+}
+
+.fs-action-icon-module-root:hover {
+    background-color: rgb(0 0 0 / 6%) !important;
+}
+
+/* ---------- Paper ---------- */
+.fs-paper-module-root {
+    background: var(--theme-colors-surface) !important;
+    border-radius: var(--theme-radius-lg) !important;
+    box-shadow: var(--fluent-shadow-2);
+}
+
+/* ---------- Skeleton loaders ---------- */
+.fs-skeleton-module-skeleton {
+    background: linear-gradient(
+        100deg,
+        rgb(0 0 0 / 3%) 30%,
+        rgb(0 0 0 / 9%) 50%,
+        rgb(0 0 0 / 3%) 70%
+    );
+    background-size: 200% 100%;
+    border-radius: var(--theme-radius-sm) !important;
+    animation: fluent-shimmer 1.6s linear infinite;
+}
+
+@keyframes fluent-shimmer {
+    from {
+        background-position: 150% 0;
+    }
+
+    to {
+        background-position: -50% 0;
+    }
+}
+
+/* ---------- Tabs ---------- */
+.fs-tabs-module-tab {
+    background: transparent !important;
+    border-bottom: 2px solid transparent !important;
+    border-radius: 0 !important;
+    transition: border-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-tabs-module-tab[data-active='true'] {
+    background: transparent !important;
+    border-bottom-color: var(--theme-colors-primary-filled) !important;
+}
+
+.fs-tabs-module-tab:hover {
+    background: rgb(0 0 0 / 4%) !important;
+}
+
+/* ---------- Table ---------- */
+.fs-table-module-th {
+    background-color: transparent !important;
+    border-bottom: 1px solid rgb(0 0 0 / 8%) !important;
+}
+
+.fs-table-module-td {
+    border-bottom: 1px solid rgb(0 0 0 / 6%) !important;
+}
+
+/* ---------- Sidebar nav items ---------- */
+.fs-sidebar-item-module-root {
+    border-radius: var(--theme-radius-sm) !important;
+    transition: background-color var(--fluent-duration-fast) var(--fluent-curve-easy-ease);
+}
+
+.fs-sidebar-item-module-root:hover {
+    background-color: rgb(0 0 0 / 5%) !important;
+}
+
+.fs-sidebar-item-module-root[data-active='true'] {
+    position: relative;
+    background-color: rgb(0 95 184 / 14%) !important;
+}
+
+.fs-sidebar-item-module-root[data-active='true']::before {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    width: 3px;
+    height: 60%;
+    content: '';
+    background: var(--theme-colors-primary-filled);
+    border-radius: 0 4px 4px 0;
+}
+
+.fs-sidebar-item-module-label {
+    font-weight: 400 !important;
+}
+
+/* ---------- Titlebar ---------- */
+.fs-titlebar-module-titlebar-container {
+    background: transparent !important;
+    border-bottom: 1px solid rgb(0 0 0 / 6%);
+}
+
+/* ---------- Play button (player bar) ---------- */
+.fs-play-button-module-play-button {
+    background-color: var(--theme-colors-primary-filled) !important;
+    border-radius: 9999px !important;
+    transition: transform var(--fluent-duration-faster) var(--fluent-curve-easy-ease);
+}
+
+.fs-play-button-module-play-button:active {
+    transform: scale(0.92);
+}
+
+/* ---------- Item cards (album/artist grid tiles) ---------- */
+.fs-item-card-module-container {
+    border-radius: var(--theme-radius-xl) !important;
+    transition:
+        box-shadow var(--fluent-duration-normal) var(--fluent-curve-decelerate-mid),
+        transform var(--fluent-duration-normal) var(--fluent-curve-decelerate-mid);
+}
+
+.fs-item-card-module-row a {
+    line-height: 1.4 !important;
+}
+
+.fs-item-card-module-container:hover {
+    background-color: rgb(0 0 0 / 4%) !important;
+    border: 1px solid rgb(0 0 0 / 8%);
+    box-shadow: 0 0 0 0 !important;
+    transform: translateY(0);
+}
+
+.fs-item-card-module-image,
+.fs-item-card-module-image-container {
+    border-radius: var(--theme-radius-lg) !important;
+}
+
+.fs-item-card-module-image-container {
+    border: 1px solid rgb(0 0 0 / 8%);
+}
+
+.fs-item-card-controls-module-play-button,
+.fs-item-card-controls-module-secondary-button {
+    border: 1px solid rgb(255 255 255 / 25%) !important;
+}
+
+.fs-item-card-module-container.fs-item-card-module-poster {
+    padding: 4px !important;
+}
+
+.fs-item-card-module-detail-container {
+    padding: var(--theme-spacing-sm) !important;
+}
+
+/* ---------- Playlist rows ---------- */
+.fs-sidebar-playlist-list-module-row:has(.fs-sidebar-playlist-list-module-name-active) {
+    background-color: rgb(0 0 0 / 6%) !important;
+    border-radius: var(--theme-radius-md) !important;
+}
+
+.fs-sidebar-playlist-list-module-row:has(.fs-sidebar-playlist-list-module-name-active)::before {
+    display: none !important;
+}
+
+.fs-sidebar-playlist-list-module-name-active {
+    font-weight: 600;
+    color: var(--theme-colors-primary-filled) !important;
+}
+
+/* ---------- Featured genres ---------- */
+.fs-featured-genres-module-genre-container {
+    --genre-color: var(--theme-colors-primary-filled) !important;
+
+    background-color: rgb(0 0 0 / 3%) !important;
+    border-radius: var(--theme-radius-md) !important;
+}
+
+/* ---------- Favorite/rating badges — these sit on album art, kept
+   identical to dark mode for the same reason as the play-button block
+   above (art brightness varies independently of app theme). ---------- */
+.fs-item-card-module-favorite-badge {
+    top: 8px !important;
+    left: 8px !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: var(--theme-colors-primary-filled) !important;
+    box-shadow: var(--fluent-shadow-4) !important;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-6.5-4.35-9.5-8.5C.7 9.8 1.4 6 4.6 4.9 7 4 9.4 4.9 12 7.4 14.6 4.9 17 4 19.4 4.9 22.6 6 23.3 9.8 21.5 12.5 18.5 16.65 12 21 12 21z'/%3E%3C/svg%3E");
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    transform: none !important;
+}
+
+.fs-item-card-module-rating-badge {
+    text-shadow: none !important;
+    background-color: rgb(0 0 0 / 55%) !important;
+    border-radius: 9999px !important;
+    box-shadow: var(--fluent-shadow-4) !important;
+    backdrop-filter: blur(8px);
+}
+
+.fs-item-card-module-rating-badge::before {
+    margin-right: 2px;
+    color: var(--theme-colors-primary-filled);
+    content: '\2605';
+}
+
+/* ---------- Context menu preview panel ---------- */
+.fs-context-menu-preview-module-container {
+    background: rgb(255 255 255 / 90%) !important;
+    border-radius: var(--theme-radius-xl) !important;
+    backdrop-filter: blur(30px) saturate(125%);
+}
+
+.fs-context-menu-preview-module-image {
+    border-radius: var(--theme-radius-lg) !important;
+}

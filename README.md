@@ -34,9 +34,11 @@ Custom themes are **desktop (Electron) only** — not available in the web or Do
    | macOS | `~/Library/Application Support/feishin/Themes` |
    | Linux | `~/.config/feishin/Themes` |
 
-3. Copy both `Windows11Fluent.json` and `windows11-fluent.css` from this repo into that folder.
-4. Back in Settings, select **"Windows11 Fluent"** from the Theme dropdown (it appears under Dark
-   themes). Click **Reload** if it doesn't show up automatically.
+3. Copy the theme files you want from this repo into that folder:
+   - **Dark**: `Windows11Fluent.json` + `windows11-fluent.css`
+   - **Light (🚧 WIP, see Roadmap)**: `Windows11FluentLight.json` + `windows11-fluent-light.css`
+4. Back in Settings, select **"Windows11 Fluent"** (Dark) or **"Windows11 Fluent Light"** (Light)
+   from the Theme dropdown. Click **Reload** if it doesn't show up automatically.
 
 ## What it does
 
@@ -71,8 +73,12 @@ Custom themes are **desktop (Electron) only** — not available in the web or Do
 
 ## Roadmap
 
-- [ ] **Light mode** — a Windows 11 light-theme variant (currently dark-only).
-- [ ] Broader component audit (see Known limitations above).
+- [ ] **Light mode — 🚧 WIP.** `Windows11FluentLight.json` + `windows11-fluent-light.css` exist and
+      are usable, but this is a rough first pass: app-chrome surfaces (menus, inputs, sidebar,
+      dividers) are inverted from light-on-dark to dark-on-light, and overlay elements that sit on
+      album art (playback buttons, favorite/rating badges) are intentionally kept identical to
+      dark mode. Not yet verified against real content across most views — expect rough edges.
+- [ ] Broader component audit (see Known limitations above), covering both light and dark.
 
 Contributions and suggestions welcome — open an issue or PR.
 
