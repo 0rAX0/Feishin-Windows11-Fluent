@@ -13,12 +13,12 @@ no application source code was modified.
 Home page, with the hover overlay on a grid card (white circular play/share/skip buttons,
 heart-shaped favorite badge, star rating pill):
 
-![Home page with hover card](screenshots/001.png)
+![Home page with hover card](screenshots/002.png)
 
 Album detail page, showing the restyled Play/Next/Last/Album radio buttons, sidebar, and player
 bar with the Fluent-style seek/volume sliders:
 
-![Album detail page](screenshots/002.png)
+![Album detail page](screenshots/001.png)
 
 ## Installation
 
